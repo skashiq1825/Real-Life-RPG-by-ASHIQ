@@ -116,13 +116,27 @@ body {
     align-items: flex-start;
     
 }
-.xparea{
+.xparea {
     width: 25vw;
+    position: relative;
     height: 5vh;
-    background-color: #C4E5D7;
+    background-color: #658E7D;
     background-position: center;
     background-size: cover;
-    background-image: url(./assets/uicomponents/Vector\ 8.png);
+    clip-path: polygon(62% 0%, 75% 6.6%, 90.1% 0%, 100% 7.7%, 100% 100%, 0% 100%, 0% 0%);
+-webkit-clip-path: polygon(62% 0%, 75% 17%, 90.1% 0%, 100% 7.7%, 100% 100%, 0% 100%, 0% 0%);
+overflow: hidden;
+    /* background-image: url(./assets/uicomponents/Vector\ 8.png); */
+}
+.xp-count{
+width: 0%;
+height: 100%;
+background-color: #FAEBD7;
+padding: 0.5vw;
+display: flex;
+align-items: flex-end;
+
+/* position: absolute; */
 }
 .scroller{
     width: 13vw;
@@ -943,4 +957,165 @@ justify-content: center;
     font-family: bit;
     font-size: 2.6vw;
     background-image: url(./assets/uicomponents/store-thumbnal.png);
+}
+
+/* ==========================================
+   AUTH SCREEN
+   Hide LIFE RPG until a session is confirmed
+   ========================================== */
+
+body:not(.is-authenticated) #main,
+body:not(.is-authenticated) .task-indicator {
+    display: none !important;
+}
+
+#auth-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #1e2c26;
+    background-image: url(./assets/theme/main-theme-angled.png);
+    background-position: center;
+    background-size: cover;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+}
+
+body.is-authenticated #auth-screen {
+    display: none;
+}
+
+#auth-loading {
+    font-family: bit;
+    font-size: 1.6vw;
+    color: #FAEBD7;
+    text-align: center;
+}
+
+#auth-panel {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2vw;
+}
+
+.auth-card {
+    width: 28vw;
+    max-width: 420px;
+    min-width: 280px;
+    background-color: #FAEBD7;
+    border: 1px solid #1e201f;
+    border-radius: 1.2vw;
+    padding: 2vw;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9vw;
+}
+
+.auth-card h1 {
+    font-family: bit;
+    font-weight: 300;
+    font-size: 2.2vw;
+    color: #1e2c26;
+    text-align: center;
+}
+
+.auth-subtitle {
+    font-family: montserrat, sans-serif;
+    font-size: 0.95vw;
+    color: #5e4220;
+    text-align: center;
+}
+
+.auth-form {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0.6vw;
+}
+
+.auth-form label {
+    font-family: montserrat, sans-serif;
+    font-size: 0.85vw;
+    color: #1e2c26;
+}
+
+.auth-form input {
+    width: 100%;
+    height: 2.8vw;
+    min-height: 40px;
+    padding: 0.6vw 0.8vw;
+    border-radius: 0.5vw;
+    border: 1px solid rgb(101, 100, 100);
+    background-color: #fceedd;
+    outline: none;
+    font-size: 1vw;
+    font-family: montserrat, sans-serif;
+}
+
+.auth-form button {
+    width: 100%;
+    height: 3vw;
+    min-height: 42px;
+    margin-top: 0.4vw;
+    background-color: #658E7D;
+    border: 1px solid #1e201f;
+    border-radius: 0.5vw;
+    font-family: bit;
+    font-size: 1.2vw;
+    font-weight: 300;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.auth-switch {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: montserrat, sans-serif;
+    font-size: 0.85vw;
+    color: #5e4220;
+    text-decoration: underline;
+    padding: 0.4vw 0;
+}
+
+.auth-message {
+    font-family: montserrat, sans-serif;
+    font-size: 0.85vw;
+    border-radius: 0.4vw;
+    padding: 0.6vw 0.8vw;
+    margin: 0;
+}
+
+.auth-error {
+    background-color: rgba(236, 8, 8, 0.15);
+    color: #8a1010;
+}
+
+.auth-success {
+    background-color: rgba(4, 197, 4, 0.18);
+    color: #146314;
+}
+
+.logout-btn {
+    height: 65%;
+    margin-right: 0.6vw;
+    padding: 0 0.8vw;
+    background-color: antiquewhite;
+    border: 1px solid black;
+    border-radius: 0.4vw;
+    font-family: bit;
+    font-size: 0.9vw;
+    font-weight: 300;
+    color: #1e2c26;
+    cursor: pointer;
+    flex-shrink: 0;
+    align-self: center;
 }

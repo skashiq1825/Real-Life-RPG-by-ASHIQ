@@ -1,3 +1,196 @@
+// ==========================================
+// SUPABASE AUTHENTICATION
+// Paste your project values from:
+// Supabase Dashboard → Project Settings → API
+// Use the anon / public key only. Never use the service_role key here.
+// ==========================================
+
+const SUPABASE_URL = "https://acgmkrxsgrrlcfgveent.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_lLYEgrwMM272oK0-YZuY7Q_O8zRZQ7p";
+
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Kept for a later user-specific localStorage step.
+// Game data still uses the existing global keys (tasks, currentXP, etc.).
+function getCurrentAuthUserId() {
+    return supabaseClient.auth.getSession().then(({ data }) => {
+        return data.session ? data.session.user.id : null;
+    });
+}
+
+const authLoading = document.getElementById("auth-loading");
+const authPanel = document.getElementById("auth-panel");
+const loginForm = document.getElementById("login-form");
+const registerForm = document.getElementById("register-form");
+const authSwitchBtn = document.getElementById("auth-switch-btn");
+const authSubtitle = document.getElementById("auth-subtitle");
+const authError = document.getElementById("auth-error");
+const authSuccess = document.getElementById("auth-success");
+const logoutBtn = document.getElementById("logout-btn");
+
+function clearAuthMessages() {
+    authError.hidden = true;
+    authSuccess.hidden = true;
+    authError.textContent = "";
+    authSuccess.textContent = "";
+}
+
+function showAuthError(message) {
+    authSuccess.hidden = true;
+    authError.hidden = false;
+    authError.textContent = message;
+}
+
+function showAuthSuccess(message) {
+    authError.hidden = true;
+    authSuccess.hidden = false;
+    authSuccess.textContent = message;
+}
+
+function showLifeRpg() {
+    document.body.classList.add("is-authenticated");
+    authLoading.hidden = true;
+    authPanel.hidden = true;
+}
+
+function showAuthScreen() {
+    document.body.classList.remove("is-authenticated");
+    authLoading.hidden = true;
+    authPanel.hidden = false;
+    clearAuthMessages();
+}
+
+function showLoginView() {
+    loginForm.hidden = false;
+    registerForm.hidden = true;
+    authSubtitle.textContent = "Login to continue your quest";
+    authSwitchBtn.textContent = "Need an account? Register";
+}
+
+function showRegisterView() {
+    loginForm.hidden = true;
+    registerForm.hidden = false;
+    authSubtitle.textContent = "Create an account to begin";
+    authSwitchBtn.textContent = "Already have an account? Login";
+}
+
+authSwitchBtn.addEventListener("click", () => {
+    clearAuthMessages();
+    if (registerForm.hidden) {
+        showRegisterView();
+    } else {
+        showLoginView();
+    }
+});
+
+loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    clearAuthMessages();
+
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value;
+    const loginBtn = document.getElementById("login-btn");
+
+    loginBtn.disabled = true;
+
+    const { error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+    });
+
+    loginBtn.disabled = false;
+
+    if (error) {
+        showAuthError(error.message);
+        return;
+    }
+
+    showAuthSuccess("Logged in.");
+});
+
+registerForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    clearAuthMessages();
+
+    const email = document.getElementById("register-email").value.trim();
+    const password = document.getElementById("register-password").value;
+    const registerBtn = document.getElementById("register-btn");
+
+    registerBtn.disabled = true;
+
+    const { data, error } = await supabaseClient.auth.signUp({
+        email,
+        password
+    });
+
+    registerBtn.disabled = false;
+
+    if (error) {
+        showAuthError(error.message);
+        return;
+    }
+
+    if (data.session) {
+        showAuthSuccess("Account created. Entering LIFE RPG...");
+        return;
+    }
+
+    showAuthSuccess("Account created. Check your email to confirm, then login.");
+    showLoginView();
+});
+
+logoutBtn.addEventListener("click", async () => {
+    // Signs out of Supabase only. Does not clear localStorage.
+    const { error } = await supabaseClient.auth.signOut();
+
+    if (error) {
+        console.error("Logout failed:", error.message);
+        return;
+    }
+});
+
+const supabaseKeysMissing =
+    SUPABASE_URL === "YOUR_SUPABASE_URL" ||
+    SUPABASE_ANON_KEY === "YOUR_SUPABASE_ANON_KEY";
+
+if (supabaseKeysMissing) {
+    showAuthScreen();
+    showLoginView();
+    showAuthError("Add your SUPABASE_URL and SUPABASE_ANON_KEY in script.js");
+} else {
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+        if (event === "SIGNED_IN" || (event === "INITIAL_SESSION" && session)) {
+            showLifeRpg();
+            return;
+        }
+
+        if (event === "SIGNED_OUT" || (event === "INITIAL_SESSION" && !session)) {
+            showAuthScreen();
+            showLoginView();
+        }
+    });
+
+    (async function checkInitialSession() {
+        const { data, error } = await supabaseClient.auth.getSession();
+
+        if (error) {
+            console.error("Session check failed:", error.message);
+            showAuthScreen();
+            showLoginView();
+            showAuthError(error.message);
+            return;
+        }
+
+        if (data.session) {
+            showLifeRpg();
+        } else {
+            showAuthScreen();
+            showLoginView();
+        }
+    })();
+}
+
+
 var scroller = document.querySelector(".scroller");
 var pageinfo = document.querySelector(".page-info");
 var countscrollopening = 0;
@@ -83,207 +276,417 @@ modebtn.forEach((btn) => {
     });
 
 });
-let task_arr = JSON.parse(localStorage.getItem("tasks")) || [];
+// ==========================================
+// TASK / MISSION SYSTEM
+// ==========================================
+
+let task_arr =
+    JSON.parse(localStorage.getItem("tasks")) || [];
 
 var todoform = document.querySelector(".todo-form");
 
-var completedCount =
+
+// ==========================================
+// COMPLETED MISSION COUNT
+// ==========================================
+
+let completedCount =
     Number(localStorage.getItem("completedCount")) || 0;
 
 
-// ==============================
-// COUNTER UPDATE
-// ==============================
+// ==========================================
+// XP SYSTEM
+// ==========================================
 
-function updateTaskIndicator() {
+let currentXP =
+    Number(localStorage.getItem("currentXP")) || 0;
 
-    document.getElementById("completedmissioncount").textContent =
-        completedCount;
+const MAX_XP = 1000;
+const XP_PER_TASK = 2;
 
-    document.getElementById("pendingmissioncount").textContent =
-        task_arr.filter(task => !task.completed).length;
+
+// ==========================================
+// UPDATE XP UI
+// ==========================================
+
+function updateXP() {
+
+    const xpText = document.querySelector(".xp-count h6");
+    const xpBar = document.querySelector(".xp-count");
+
+    if (!xpText || !xpBar) return;
+
+    // XP text
+    xpText.textContent =
+        `${currentXP}/${MAX_XP}`;
+
+    // XP bar width
+    xpBar.style.width =
+        `${(currentXP / MAX_XP) * 100}%`;
+
+    // Save XP
+    localStorage.setItem(
+        "currentXP",
+        currentXP
+    );
 }
 
 
-// ==============================
+// ==========================================
+// UPDATE TASK INDICATOR
+// ==========================================
+
+function updateTaskIndicator() {
+
+    const completedElement =
+        document.getElementById("completedmissioncount");
+
+    const pendingElement =
+        document.getElementById("pendingmissioncount");
+
+
+    // Completed missions
+    if (completedElement) {
+        completedElement.textContent =
+            completedCount;
+    }
+
+
+    // Pending missions
+    if (pendingElement) {
+
+        const pendingCount =
+            task_arr.filter(
+                task => !task.completed
+            ).length;
+
+        pendingElement.textContent =
+            pendingCount;
+    }
+}
+
+
+// ==========================================
 // ADD / UPDATE TASK
-// ==============================
+// ==========================================
 
 todoform.addEventListener("submit", (event) => {
 
     event.preventDefault();
 
-    let task_name = event.target[0].value;
+    let task_name =
+        event.target[0].value;
+
 
     let obj_add_task = {
+
         task_name: task_name,
+
         completed: false
+
     };
 
 
+    // ======================================
     // UPDATE EXISTING TASK
+    // ======================================
+
     if (taskIndex !== null) {
 
-        // purani completed state preserve karo
+        // Purani completed state preserve karo
         obj_add_task.completed =
             task_arr[taskIndex].completed;
 
-        task_arr[taskIndex] = obj_add_task;
+        task_arr[taskIndex] =
+            obj_add_task;
 
         taskIndex = null;
+
     }
 
 
+    // ======================================
     // NEW TASK
+    // ======================================
+
     else {
 
-        task_arr.push(obj_add_task);
+        task_arr.push(
+            obj_add_task
+        );
+
     }
 
 
+    // Save tasks
     localStorage.setItem(
         "tasks",
         JSON.stringify(task_arr)
     );
 
+
+    // Reset form
     todoform.reset();
 
+
+    // Update UI
     todo_ui();
 
     updateTaskIndicator();
+
+    updateXP();
+
 });
 
 
-// ==============================
+// ==========================================
 // TASK UI
-// ==============================
+// ==========================================
 
 var todo_ui = () => {
 
     task_list_area.innerHTML = "";
 
+
     task_arr.forEach((elem, index) => {
 
         task_list_area.innerHTML += `
-        
-        <div class="task-card">
 
-            <div class="task-list-name-area">
-                <h3>${elem.task_name}</h3>
-            </div>
+            <div class="task-card">
 
-            <div class="task-list-detail-area">
+                <div class="task-list-name-area">
 
-                <div 
-                    onclick="completeTask(${index})"
-                    class="completed"
-                    style="
-                        background-color: ${
-                            elem.completed
-                            ? "rgba(4, 197, 4, 0.8)"
-                            : "rgba(199, 199, 199, 0.411)"
-                        };
-                    "
-                >
                     <h3>
-                        ${
-                            elem.completed
-                            ? "completed"
-                            : "complete"
-                        }
+                        ${elem.task_name}
                     </h3>
+
                 </div>
 
-                <div 
-                    onclick="updatetask(${index})"
-                    class="update"
-                >
-                    <h3>update</h3>
-                </div>
 
-                <div 
-                    onclick="removetask(${index})"
-                    class="remove"
-                >
-                    <h3>remove</h3>
+                <div class="task-list-detail-area">
+
+
+                    <!-- COMPLETE -->
+
+                    <div
+                        onclick="completeTask(${index})"
+                        class="completed"
+
+                        style="
+                            background-color:
+                            ${
+                                elem.completed
+
+                                ? "rgba(4, 197, 4, 0.8)"
+
+                                : "rgba(199, 199, 199, 0.411)"
+                            };
+                        "
+                    >
+
+                        <h3>
+
+                            ${
+                                elem.completed
+
+                                ? "completed"
+
+                                : "complete"
+                            }
+
+                        </h3>
+
+                    </div>
+
+
+                    <!-- UPDATE -->
+
+                    <div
+                        onclick="updatetask(${index})"
+                        class="update"
+                    >
+
+                        <h3>
+                            update
+                        </h3>
+
+                    </div>
+
+
+                    <!-- REMOVE -->
+
+                    <div
+                        onclick="removetask(${index})"
+                        class="remove"
+                    >
+
+                        <h3>
+                            remove
+                        </h3>
+
+                    </div>
+
+
                 </div>
 
             </div>
-
-        </div>
 
         `;
+
     });
 
+
     updateTaskIndicator();
+
 };
 
 
-// ==============================
+// ==========================================
 // COMPLETE TASK
-// ==============================
+// ==========================================
 
 function completeTask(index) {
 
-    // already completed hai toh kuch mat karo
+    // Already completed hai
+    // toh XP dobara nahi milega
+
     if (task_arr[index].completed) {
         return;
     }
 
-    task_arr[index].completed = true;
 
-    // completed +1
+    // Mark completed
+
+    task_arr[index].completed =
+        true;
+
+
+    // ======================================
+    // COMPLETED MISSION +1
+    // ======================================
+
     completedCount++;
 
-    // save tasks
+
+    // ======================================
+    // XP +2
+    // ======================================
+
+    currentXP += XP_PER_TASK;
+
+
+    // Maximum XP cross na kare
+
+    if (currentXP > MAX_XP) {
+
+        currentXP =
+            MAX_XP;
+
+    }
+
+
+    // ======================================
+    // SAVE TASKS
+    // ======================================
+
     localStorage.setItem(
         "tasks",
         JSON.stringify(task_arr)
     );
 
-    // save completed count
+
+    // ======================================
+    // SAVE COMPLETED COUNT
+    // ======================================
+
     localStorage.setItem(
         "completedCount",
         completedCount
     );
 
+
+    // ======================================
+    // SAVE XP
+    // ======================================
+
+    localStorage.setItem(
+        "currentXP",
+        currentXP
+    );
+
+
+    // ======================================
+    // UPDATE UI
+    // ======================================
+
     todo_ui();
 
     updateTaskIndicator();
+
+    updateXP();
+
 }
 
 
-// ==============================
+// ==========================================
 // UPDATE TASK
-// ==============================
+// ==========================================
 
 var updatetask = (index) => {
 
-    let tsk = task_arr[index];
+    let tsk =
+        task_arr[index];
 
-    taskIndex = index;
 
-    todoform[0].value = tsk.task_name;
+    taskIndex =
+        index;
+
+
+    todoform[0].value =
+        tsk.task_name;
+
 };
 
 
-// ==============================
+// ==========================================
 // REMOVE TASK
-// ==============================
+// ==========================================
 
 let removetask = (index) => {
 
-    task_arr.splice(index, 1);
+    // Task remove
+    task_arr.splice(
+        index,
+        1
+    );
 
+
+    // Save tasks
     localStorage.setItem(
         "tasks",
         JSON.stringify(task_arr)
     );
 
+
+    // Update UI
     todo_ui();
 
     updateTaskIndicator();
+
+    updateXP();
+
 };
+
+
+// ==========================================
+// INITIAL LOAD
+// ==========================================
+
+todo_ui();
+
+updateTaskIndicator();
+
+updateXP();
 
 // const characterImages = document.querySelectorAll(".character-box img");
 
