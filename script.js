@@ -49,14 +49,14 @@ function showAuthSuccess(message) {
 
 function showLifeRpg() {
     document.body.classList.add("is-authenticated");
-    authLoading.hidden = true;
-    authPanel.hidden = true;
+    if (authLoading) authLoading.hidden = true;
+    if (authPanel) authPanel.hidden = true;
 }
 
 function showAuthScreen() {
     document.body.classList.remove("is-authenticated");
-    authLoading.hidden = true;
-    authPanel.hidden = false;
+    if (authLoading) authLoading.hidden = true;
+    if (authPanel) authPanel.hidden = false;
     clearAuthMessages();
 }
 
@@ -120,7 +120,10 @@ registerForm.addEventListener("submit", async (event) => {
 
     const { data, error } = await supabaseClient.auth.signUp({
         email,
-        password
+        password,
+        options: {
+            emailRedirectTo: window.location.origin
+        }
     });
 
     registerBtn.disabled = false;
@@ -930,6 +933,82 @@ loadVault();
 
 
 // ==========================================
+// COINS
+// ==========================================
+
+let coins = 100;
+
+const savedCoins =
+    localStorage.getItem("coins");
+
+if (savedCoins !== null) {
+
+    const parsedCoins =
+        Number(savedCoins);
+
+    if (!Number.isNaN(parsedCoins)) {
+        coins = parsedCoins;
+    }
+
+}
+
+const coinCountEl =
+    document.querySelector(".coin-count");
+
+
+function saveCoins() {
+
+    localStorage.setItem(
+        "coins",
+        coins
+    );
+
+}
+
+
+function updateCoinsUI() {
+
+    if (coinCountEl) {
+        coinCountEl.textContent = coins;
+    }
+
+    saveCoins();
+
+}
+
+
+function showStoreFeedback(card, message) {
+
+    let feedback =
+        card.querySelector(".store-feedback");
+
+    if (!feedback) {
+
+        feedback =
+            document.createElement("h5");
+
+        feedback.className =
+            "store-feedback";
+
+        card.appendChild(feedback);
+
+    }
+
+    feedback.textContent = message;
+    feedback.style.display = "block";
+
+    clearTimeout(feedback.hideTimer);
+
+    feedback.hideTimer = setTimeout(() => {
+        feedback.style.display = "none";
+    }, 1600);
+
+}
+
+
+updateCoinsUI();
+
+// ==========================================
 // STORE BUY
 // ==========================================
 
@@ -967,6 +1046,17 @@ storeCards.forEach((card) => {
             image.getAttribute("src");
 
 
+        const priceText =
+            card.querySelector(".price h5");
+
+        const price =
+            Number(
+                priceText
+                    ? priceText.textContent.trim()
+                    : 0
+            );
+
+
         // -----------------------------
         // CHECK DUPLICATE
         // -----------------------------
@@ -987,6 +1077,27 @@ storeCards.forEach((card) => {
             return;
 
         }
+
+
+        // -----------------------------
+        // CHECK COINS
+        // -----------------------------
+
+        if (price > coins) {
+
+            showStoreFeedback(
+                card,
+                "insufficient coin"
+            );
+
+            return;
+
+        }
+
+
+        coins -= price;
+
+        updateCoinsUI();
 
 
         // -----------------------------

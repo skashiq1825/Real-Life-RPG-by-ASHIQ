@@ -88,6 +88,7 @@ body {
     align-items: flex-start;
     justify-content: flex-end;
     padding: 1vw 1vw;
+    gap: 1vw;
 }
 .lev-box{
     width: 70px ;
@@ -856,6 +857,21 @@ justify-content: center;
     font-weight: 300;
     color: #ffffff;
 }
+.store-feedback {
+    position: absolute;
+    bottom: 0.3vw;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+    text-align: center;
+    font-family: bit;
+    font-size: 0.75vw;
+    font-weight: 300;
+    color: #7a1212;
+    pointer-events: none;
+    display: none;
+    z-index: 2;
+}
 .product-img{
     width: 95%;
     height: 21vh;
@@ -1106,7 +1122,7 @@ body.is-authenticated #auth-screen {
 
 .logout-btn {
     height: 65%;
-    margin-right: 0.6vw;
+    /* margin-right: 0.6vw; */
     padding: 0 0.8vw;
     background-color: antiquewhite;
     border: 1px solid black;
@@ -1117,5 +1133,5 @@ body.is-authenticated #auth-screen {
     color: #1e2c26;
     cursor: pointer;
     flex-shrink: 0;
-    align-self: center;
+    /* align-self: center; */
 }
