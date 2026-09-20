@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPG</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.25/dist/lenis.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="main">
+        <div class="default-theme">
+            <div class="nav">
+                <div class="left">
+                    <div class="lev-box">
+                        <h3>2</h3>
+                    </div>
+                    <div class="xp-box">
+                        <div class="xparea"></div>
+                    </div>
+                </div>
+               <div class="middle">
+                <div class="coin-box">
+                    <div class="coin-logo"></div>
+                    <h3>1000</h3>
+                </div>
+               </div>
+               <div class="right">
+                <div class="scroller">
+                    <h5>daily task</h5>
+                <div class="scrollpage">
+                    <div class="page-info"></div>
+                </div>
+                    
+                </div>
+               </div>
+            </div>
+            <div class="character-box">
+                <img src="./assets/vault/Male Dress Bottom/man bottom frame default.png" alt="">
+              <img src="./assets/vault/Male Shoes/shoes frame default.png" alt="">
+              <img src="./assets/vault/Male Dress Top/man top default frame.png" alt="">
+              <img src="./assets/vault/Others/face frame default.png" alt="">
+            </div>
+            <div class="char-shadow"></div>
+        </div>
+        <div class="mode">
+            <div class="profile-btn" data-target = "profile">
+                <i class="ri-user-5-fill"></i>
+                <h4>profile</h4>
+            </div>
+            <div class="tasks-btn" data-target = "mission" >
+                <i class="ri-focus-3-fill"></i>
+                <h4>mission</h4>
+
+            </div>
+            <div class="achievements-btn" data-target = "glories">
+                <i class="ri-medal-fill"></i>
+                <h4>Glories</h4>
+
+            </div>
+            <div class="vault-btn" data-target = "vault">
+                <i class="ri-safe-2-fill" ></i>
+                <h4>vault</h4>
+
+            </div>
+            <div class="store-btn" data-target = "store">
+                <i class="ri-store-fill"></i>
+                <h4>store</h4>
+
+            </div>
+        </div>
+        <div class="page mission">
+            <div class="add-task-sec">
+                <!-- <h2>Add Task</h2> -->
+
+                <form class="todo-form">
+                    <input class="addtask-input"
+                        type="text"
+                        placeholder="mission name"
+                        required
+                    >
+        
+                    <!-- <textarea
+                        placeholder="Task details"
+                        required
+                    ></textarea> -->
+        
+                    <button class="addtask-btn" type="submit"><h3>Add mission</h3></button>
+                    <button class="updatetask-btn" type="submit"><h3>update</h3></button>
+                </form>
+            </div>
+            <div class="task-list-area">
+            
+                
+            </div>
+            <div class="cross">
+                <h3>X</h3>
+            </div>
+        </div>
+        <div class="page vault">
+            <div class="thumbnail">
+                <h5>Inventory</h5>
+            </div>
+            <div class="vault-content">
+                <div class="try-area">
+                    <div class="character-box try-box">
+                        <img src="./assets/vault/Male Dress Bottom/man bottom frame default.png" alt="bottom">
+                      <img src="./assets/vault/Male Shoes/shoes frame default.png" alt="shoes">
+                      <img src="./assets/vault/Male Dress Top/man top default frame.png" alt="top">
+                      <img src="./assets/vault/Others/face frame default.png" alt="face">
+                    </div>
+                </div>
+                <div class="collection">
+                    <div class="collection-option">
+                        <div class="option-top" data-target="top-collection">
+                            <i class="ri-t-shirt-2-line"></i>
+                        </div>
+                        <div class="option-bottom" data-target="bottom-collection">
+
+                        </div>
+                        <div class="option-shoes" data-target="shoes-collection">
+                            
+                        </div>
+                    </div>
+                    <div class="collection-area">
+                        <div class="vault-collection top-collection">
+                            <div class="collection-card">
+                               
+                            </div>
+                            <div class="collection-card">
+                               
+                            </div>
+                            <div class="collection-card">
+                                
+                            </div>
+                            <div class="collection-card">
+                                
+                            </div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                        </div>
+                        <div class="vault-collection  bottom-collection">
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                        </div>
+                        <div class="vault-collection  shoes-collection">
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                            <div class="collection-card"></div>
+                        </div>
+                    </div>
+                </div>
+             
+            </div>
+
+
+
+            <div class="cross">
+                <h3>X</h3>
+            </div>
+        </div>
+        <div class="page store">
+
+            <!-- TOP 1 -->
+            <div class="store-card" data-type="top" data-id="top-000">
+                <div class="product-img">
+                    <img src="./assets/vault/Male Dress Top/green-top-male.png" alt="">
+                    <div class="price">
+                        <h5>300</h5>
+                    </div>
+                </div>
+                <div class="buy">
+                    <h5>buy</h5>
+                </div>
+            </div>
+        
+            <!-- TOP 2 -->
+            <div class="store-card" data-type="top" data-id="top-001">
+                <div class="product-img">
+                    <img src="./assets/vault/Male Dress Top/black-top-male.png" alt="">
+                    <div class="price">
+                        <h5>300</h5>
+                    </div>
+                </div>
+                <div class="buy">
+                    <h5>buy</h5>
+                </div>
+            </div>
+        
+            <!-- TOP 3 -->
+            <div class="store-card" data-type="top" data-id="top-002">
+                <div class="product-img">
+                    <img src="./assets/vault/Male Dress Top/costume-top1.png" alt="">
+                    <div class="price">
+                        <h5>300</h5>
+                    </div>
+                </div>
+                <div class="buy">
+                    <h5>buy</h5>
+                </div>
+            </div>
+        
+            <!-- TOP 4 -->
+            <div class="store-card" data-type="top" data-id="top-003">
+                <div class="product-img">
+                    <img src="./assets/vault/Male Dress Top/purple-top-male.png" alt="">
+                    <div class="price">
+                        <h5>300</h5>
+                    </div>
+                </div>
+                <div class="buy">
+                    <h5>buy</h5>
+                </div>
+            </div>
+        
+            <!-- TOP 5 -->
+            <div class="store-card" data-type="top" data-id="top-004">
+                <div class="product-img">
+                    <img src="./assets/uicomponents/productimg.png" alt="">
+                    <div class="price">
+                        <h5>300</h5>
+                    </div>
+                </div>
+                <div class="buy">
+                    <h5>buy</h5>
+                </div>
+            </div>
+        
+            <!-- TOP 6 -->
+            <div class="store-card" data-type="top" data-id="top-005">
+                <div class="product-img">
+                    <img src="./assets/uicomponents/productimg.png" alt="">
+                    <div class="price">
+                        <h5>300</h5>
+                    </div>
+                </div>
+                <div class="buy">
+                    <h5>buy</h5>
+                </div>
+            </div>
+        
+            <!-- TOP 7 -->
+            <div class="store-card" data-type="top" data-id="top-006">
+                <div class="product-img">
+                    <img src="./assets/uicomponents/productimg.png" alt="">
+                    <div class="price">
+                        <h5>300</h5>
+                    </div>
+                </div>
+                <div class="buy">
+                    <h5>buy</h5>
+                </div>
+            </div>
+        
+            <!-- TOP 8 -->
+            <div class="store-card" data-type="top" data-id="top-007">
+                <div class="product-img">
+                    <img src="./assets/uicomponents/productimg.png" alt="">
+                    <div class="price">
+                        <h5>300</h5>
+                    </div>
+                </div>
+                <div class="buy">
+                    <h5>buy</h5>
+                </div>
+            </div>
+        
+            <!-- TOP 9 -->
+            <div class="store-card" data-type="top" data-id="top-008">
+                <div class="product-img">
+                    <img src="./assets/uicomponents/productimg.png" alt="">
+                    <div class="price">
+                        <h5>300</h5>
+                    </div>
+                </div>
+                <div class="buy">
+                    <h5>buy</h5>
+                </div>
+            </div>
+        
+            <!-- TOP 10 -->
+            <div class="store-card" data-type="top" data-id="top-009">
+                <div class="product-img">
+                    <img src="./assets/uicomponents/productimg.png" alt="">
+                    <div class="price">
+                        <h5>300</h5>
+                    </div>
+                </div>
+                <div class="buy">
+                    <h5>buy</h5>
+                </div>
+            </div>
+        
+            <div class="cross">
+                <h3>X</h3>
+            </div>
+        
+        </div>
+    </div>
+
+    <div class="task-indicator">
+
+        <div class="completed-mission">
+            <h5>completed mission</h5>
+            <h4 id="completedmissioncount">0</h4>
+        </div>
+        <div class="pending-mission">
+            <h5>pending mission</h5>
+            <h4 id="pendingmissioncount">0</h4>
+        </div>
+        <h3 id="current-time"></h3>
+        <h3 id="current-date"></h3>
+    </div>
+
+    <script src="https://unpkg.com/lenis@1.3.25/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
