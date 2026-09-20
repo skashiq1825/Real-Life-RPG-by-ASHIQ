@@ -48,11 +48,23 @@ function showAuthSuccess(message) {
 }
 
 function showLifeRpg() {
-    document.body.classList.add("is-authenticated");
-    if (authLoading) authLoading.hidden = true;
-    if (authPanel) authPanel.hidden = true;
-}
 
+    document.body.classList.add("is-authenticated");
+
+    if (authLoading)
+        authLoading.hidden = true;
+
+    if (authPanel)
+        authPanel.hidden = true;
+
+    setTimeout(() => {
+
+        if (typeof loadDailyTasks === "function") {
+            loadDailyTasks();
+        }
+
+    }, 500);
+}
 function showAuthScreen() {
     document.body.classList.remove("is-authenticated");
     if (authLoading) authLoading.hidden = true;
@@ -1136,4 +1148,212 @@ storeCards.forEach((card) => {
     });
 
 });
+// ==========================================
+// DAILY TASK SYSTEM
+// ==========================================
+
+var DAILY_TASK_COUNT = 5;
+var todaysDailyTasks = [];
+var todaysDailyDate = "";
+
+
+// ==========================================
+// GET TODAY'S DATE
+// ==========================================
+
+function getTodayDate() {
+
+    const now = new Date();
+
+    return `${now.getFullYear()}-${String(
+        now.getMonth() + 1
+    ).padStart(2, "0")}-${String(
+        now.getDate()
+    ).padStart(2, "0")}`;
+}
+
+
+// ==========================================
+// DATE SEED
+// ==========================================
+
+function getDateSeed(dateString) {
+
+    let seed = 0;
+
+    for (let i = 0; i < dateString.length; i++) {
+
+        seed =
+            (seed * 31 +
+                dateString.charCodeAt(i)) >>> 0;
+    }
+
+    return seed;
+}
+
+
+// ==========================================
+// SEEDED RANDOM
+// ==========================================
+
+function seededRandom(seed) {
+
+    const x =
+        Math.sin(seed) * 10000;
+
+    return x - Math.floor(x);
+}
+
+
+// ==========================================
+// SELECT EXACTLY 5 TASKS
+// ==========================================
+
+function selectDailyTasks(tasks, dateString) {
+
+    const seed =
+        getDateSeed(dateString);
+
+    const shuffled =
+        [...tasks];
+
+    for (
+        let i = shuffled.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const random =
+            seededRandom(seed + i);
+
+        const j =
+            Math.floor(
+                random * (i + 1)
+            );
+
+        [
+            shuffled[i],
+            shuffled[j]
+        ] = [
+            shuffled[j],
+            shuffled[i]
+        ];
+    }
+
+    // ALWAYS RETURN ONLY 5
+    return shuffled.slice(0, 5);
+}
+
+
+// ==========================================
+// LOAD DAILY TASKS
+// ==========================================
+
+async function loadDailyTasks() {
+
+    const dailyTaskContainer =
+        document.querySelector(
+            "#daily-task-scroller"
+        );
+
+    if (!dailyTaskContainer) {
+
+        console.log(
+            "Daily task container not found."
+        );
+
+        return;
+    }
+
+    const today =
+        getTodayDate();
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("daily_tasks")
+            .select("id, task")
+            .eq("active", true);
+
+    if (error) {
+
+        console.error(
+            "Daily tasks error:",
+            error.message
+        );
+
+        return;
+    }
+
+    if (!data || data.length < 5) {
+
+        console.error(
+            "At least 5 active daily tasks are required."
+        );
+
+        return;
+    }
+
+    todaysDailyTasks =
+        selectDailyTasks(
+            data,
+            today
+        );
+
+    todaysDailyDate =
+        today;
+
+    renderDailyTasks();
+}
+
+
+// ==========================================
+// RENDER DAILY TASKS
+// ==========================================
+
+function renderDailyTasks() {
+
+    const dailyTaskContainer =
+        document.querySelector(
+            "#daily-task-scroller"
+        );
+
+    if (!dailyTaskContainer) {
+        return;
+    }
+
+    dailyTaskContainer.innerHTML = "";
+
+    todaysDailyTasks.forEach(
+        (task) => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "daily-task-card";
+
+            card.innerHTML = `
+                <h4>${task.task}</h4>
+            `;
+
+            dailyTaskContainer.appendChild(
+                card
+            );
+        }
+    );
+}
+
+
+// ==========================================
+// INITIAL LOAD
+// ==========================================
+
+
+    loadDailyTasks();
+
 

@@ -16,7 +16,7 @@ body {
 #main{
     width: 100%;
     height: 100vh;
-    background-color: rebeccapurple;
+    /* background-color: rebeccapurple; */
     position: relative;
 }
 .default-theme {
@@ -171,23 +171,50 @@ align-items: flex-end;
     transform: translate(-50%,-0%);
     
 }
-.page-info{
-    width: 100%;
-    height: 100%;
-    background-color: rgb(165, 139, 119);
-    position: absolute;
-    bottom: 100%;
-    .my-polygon {
-        clip-path: polygon(
-          100.00% 0.00%,
-          100.00% 85.75%,
-          83.00% 100.00%,
-          17.00% 100.00%,
-          0.00% 85.75%,
-          0.00% 0.00%
-        );
-        /* background-color: #3b82f6; */
-      }
+
+    .page-info {
+        width: 100%;
+        height: 100%;
+        background-color: rgb(165, 139, 119);
+        position: absolute;
+        bottom: 100%;
+        left: 0;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    
+        gap: 1vh;
+        padding: 2vh 0.7vw;
+    
+        box-sizing: border-box;
+      
+}
+.daily-task-card {
+    width: 90%;
+    min-height: 5vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.5vh 0.4vw;
+    box-sizing: border-box;
+
+    background: rgb(169, 11, 11);
+
+    font-family: bit;
+}
+
+.daily-task-card h4 {
+    margin: 0;
+
+    font-size: 0.9vw;
+    font-weight: 400;
+    text-align: center;
+
+    color: #FAEBD7;
 }
 .character-box{
     width: 120px;
