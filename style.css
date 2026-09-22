@@ -1183,7 +1183,7 @@ body.is-authenticated #auth-screen {
         background-color: red;
         position: fixed;
         position: absolute;
-        bottom: 0;
+        bottom: calc(100vh - 100dvh);
         right: 50%;
         transform: translate(50%,0%);
         border-radius: 3vw;
