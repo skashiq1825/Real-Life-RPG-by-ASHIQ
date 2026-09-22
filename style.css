@@ -1181,9 +1181,9 @@ body.is-authenticated #auth-screen {
         width: 50vw;
         height: 25vh;
         background-color: red;
-        position: fixed;
+        
         position: absolute;
-        bottom: calc(100vh - 100dvh);
+        bottom: 0%;
         right: 50%;
         transform: translate(50%,0%);
         border-radius: 3vw;
