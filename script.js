@@ -246,7 +246,7 @@ setInterval(updateCurrentDate, 60 * 1000); // check every 1 min
 
 
 
-let modebtn = document.querySelectorAll(".mode  > div");
+let modebtn = document.querySelectorAll(".btn-wrapper  > div");
 let pages = document.querySelectorAll(".page");
 let task_list_area = document.querySelector(".task-list-area");
 var taskIndex = null;
@@ -276,7 +276,13 @@ document.querySelectorAll(".cross").forEach((cross) => {
 
 modebtn.forEach((btn) => {
 
+
     btn.addEventListener("click", () => {
+        modebtn.forEach((item) => {
+            item.style.boxShadow = "0 0 0";
+        });
+        btn.style.boxShadow = "0px 1px 15px rgb(73, 107, 84)";
+
 
         let target = btn.dataset.target;
         taskindicator.style.display ="none";
@@ -287,6 +293,8 @@ modebtn.forEach((btn) => {
         });
 
         document.querySelector(`.${target}`).style.display = "flex";
+        
+   
         console.log(`.${target}`)
     });
 
@@ -501,13 +509,9 @@ var todo_ui = () => {
 
                         <h3>
 
-                            ${
-                                elem.completed
-
-                                ? "completed"
-
-                                : "complete"
-                            }
+                            
+                               <i class="ri-check-line"></i>
+                            
 
                         </h3>
 
@@ -522,7 +526,7 @@ var todo_ui = () => {
                     >
 
                         <h3>
-                            update
+                            <i class="ri-edit-2-line"></i>
                         </h3>
 
                     </div>
@@ -536,7 +540,7 @@ var todo_ui = () => {
                     >
 
                         <h3>
-                            remove
+                            <i class="ri-close-circle-line"></i>
                         </h3>
 
                     </div>
