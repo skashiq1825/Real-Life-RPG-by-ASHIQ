@@ -1273,33 +1273,33 @@ body.is-authenticated #auth-screen {
 
 @media(max-width: 760px) {
     .task-indicator {
-        width: 50vw;
-        height: 25vh;
+        width: 35vw;
+        height: 15vh;
         background-color: red;
 
         position: absolute;
-        bottom: 1%;
-        right: 50%;
-        transform: translate(50%, 0%);
+        bottom: 72%;
+        right: 1%;
+        transform: translate(0%, 0%);
         border-radius: 3vw;
         background-color: #faebd7;
         border: 1px solid rgba(0, 0, 0, 0.726);
         font-family: bit;
-        font-size: 5.7vw;
+        font-size: 3.7vw;
         color: #5e4220;
         text-align: center;
-        /* display: flex; */
+        display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
         gap: 1vw;
         padding: 1vw;
-        display: none;
+        /* display: none; */
     }
 
     .task-indicator h3 {
         font-weight: 300;
-        font-size: 4vw;
+        font-size: 3vw;
     }
 
     .task-indicator h5 {
@@ -1332,12 +1332,12 @@ body.is-authenticated #auth-screen {
 
     .task-indicator::before {
         content: "OVERVIEW";
-        width: 45vw;
+        width: 25vw;
         height: 7vh;
         /* background-color: red; */
         position: absolute;
         z-index: 5;
-        top: -16%;
+        top: -28%;
         background-position: center;
         background-size: contain;
         background-repeat: no-repeat;
@@ -1349,6 +1349,7 @@ body.is-authenticated #auth-screen {
         font-family: bit;
         font-size: 2.6vw;
         background-image: url(./assets/uicomponents/store-thumbnal.png);
+        /* display: none; */
     }
 
     .completed-mission {
@@ -1395,6 +1396,22 @@ body.is-authenticated #auth-screen {
 
     .middle {
         width: 10%;
+        flex-direction: column;
+        padding: 1vw 0vw;
+
+    }
+    .coin-box{
+        flex-direction: column;
+        font-size:3vw;
+        height: 12vw;
+        padding: 0vw 1vw;
+    }
+    .coin-box h3{
+        font-weight: 300;
+    }
+    .coin-logo{
+        width: 7vw;
+        height: 7vw;
 
     }
 
@@ -1860,5 +1877,51 @@ body.is-authenticated #auth-screen {
         font-weight: 300;
        
     }
+    .lev-box {
+        width: 11vw;
+        height: 11vw;
+        background-color: #8BA25D;
+        clip-path: polygon(0 0, 100% 0, 100% 63%, 50% 100%, 0 63%);
+        background-position: center;
+        background-size: cover;
+        /* background-image: url(./assets/uicomponents/lev-box-image.png); */
+        font-family: bit;
+        font-size: 4.8vw;
+        color: antiquewhite;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* padding-right: 2px; */
+        padding-bottom: 2vw;
     
+    
+    }
+    .lev-box h3{
+        font-weight: 300;
+    }
+    .xp-box {
+        width: 37vw;
+        height: 100%;
+        /* background-color: aqua; */
+        padding: 0vw 0.4vw;
+        display: flex;
+        align-items: flex-start;
+    
+    }
+    .xp-count h6{
+        font-size: 2.2vw;
+    }
+    
+    .xparea {
+        width: 100%;
+        position: relative;
+        height: 5vh;
+        background-color: #658E7D;
+        background-position: center;
+        background-size: cover;
+        clip-path: polygon(62% 0%, 75% 6.6%, 90.1% 0%, 100% 7.7%, 100% 100%, 0% 100%, 0% 0%);
+        -webkit-clip-path: polygon(62% 0%, 75% 17%, 90.1% 0%, 100% 7.7%, 100% 100%, 0% 100%, 0% 0%);
+        overflow: hidden;
+        /* background-image: url(./assets/uicomponents/Vector\ 8.png); */
+    }
 }
