@@ -262,18 +262,6 @@ document.querySelectorAll(".cross").forEach((cross) => {
 
 });
 
-// var optiontop = document.querySelector(".option-top");
-// var optionbottom = document.querySelector(".option-bottom");
-// var optionshoes = document.querySelector(".option-shoes");
-// optiontop.addEventListener("click",()=>{
-// gsap.to(optiontop,{
-//     height:"7vh",
-//     duration:0.3
-// })
-// })
-// var lsd = JSON.parse(localStorage.getItem("tasks"));
-// console.log(lsd);
-
 modebtn.forEach((btn) => {
 
 
@@ -299,9 +287,7 @@ modebtn.forEach((btn) => {
     });
 
 });
-// ==========================================
-// TASK / MISSION SYSTEM
-// ==========================================
+
 
 let task_arr =
     JSON.parse(localStorage.getItem("tasks")) || [];
@@ -426,11 +412,6 @@ todoform.addEventListener("submit", (event) => {
         taskIndex = null;
 
     }
-
-
-    // ======================================
-    // NEW TASK
-    // ======================================
 
     else {
 
@@ -706,31 +687,6 @@ todo_ui();
 updateTaskIndicator();
 
 updateXP();
-
-// const characterImages = document.querySelectorAll(".character-box img");
-
-// const defaultCharacter = {
-//     bottom: "./assets/vault/Male Dress Bottom/man bottom frame default.png",
-//     shoes: "./assets/vault/Male Shoes/shoes frame default.png",
-//     top: "./assets/vault/Male Dress Top/man top default frame.png",
-//     face: "./assets/vault/Others/face frame default.png"
-// };
-
-// let savedCharacter = JSON.parse(localStorage.getItem("character"));
-
-// if (!savedCharacter) {
-//     localStorage.setItem("character", JSON.stringify(defaultCharacter));
-//     savedCharacter = defaultCharacter;
-// }
-
-// characterImages[0].src = savedCharacter.bottom;
-// characterImages[1].src = savedCharacter.shoes;
-// characterImages[2].src = savedCharacter.top;
-// characterImages[3].src = savedCharacter.face;
-
-
-
-
 
 
 var vaultcollection = document.querySelectorAll(".vault-collection");
